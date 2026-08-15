@@ -79,7 +79,7 @@ export default function Budget() {
                 return acc;
               }, {} as Record<string, { total: number, count: number, approved: number }>)
             )
-            .sort((a, b) => b[1].total - a[1].total)
+            .sort((a: any, b: any) => b[1].total - a[1].total)
             .map(([category, stats]: [string, any]) => (
               <div key={category} className="p-4 rounded-xl bg-white/5 border border-border-subtle flex justify-between items-center hover:bg-white/10 transition-colors">
                 <div>

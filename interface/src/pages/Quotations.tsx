@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, UploadCloud, CheckCircle, XCircle, Clock, IndianRupee, Trash2, ArrowUpDown, ArrowDownAZ, GitCompareArrows, List } from 'lucide-react';
+import { FileText, UploadCloud, CheckCircle, XCircle, Clock, IndianRupee, Trash2, ArrowUpDown, GitCompareArrows, List } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -121,7 +121,6 @@ export default function Quotations() {
     : 0;
 
   // Count how many service types have quotations
-  const serviceTypesWithData = SERVICE_TYPES.filter(st => quotations.some(q => q.service_type === st));
 
   return (
     <div className="p-4 md:p-8 lg:p-10 max-w-7xl mx-auto space-y-8 animate-fade-in">

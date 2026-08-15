@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Receipt, IndianRupee, Plus, Trash2, FileText, Calendar, User } from 'lucide-react';
+import { Receipt, IndianRupee, Plus, Trash2, FileText, User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 

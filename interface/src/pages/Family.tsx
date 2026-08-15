@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserPlus, Mail, Phone } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
 const familyMembers = [
   { id: 1, name: 'Ms. Meghomita Brahmachari', role: 'Bride', side: 'Bride' },

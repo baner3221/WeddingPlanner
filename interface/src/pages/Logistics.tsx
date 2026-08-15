@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, Users, Home, MapPin, Search, Plus, Trash2 } from 'lucide-react';
+import { UploadCloud, Users, Home, MapPin, Plus, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
