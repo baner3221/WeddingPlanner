@@ -85,20 +85,20 @@ export function Layout() {
       </main>
 
       {/* Mobile Bottom Bar */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-bg-elevated/90 backdrop-blur-xl border-t border-border-subtle flex justify-around p-2 pb-safe z-50">
-        {navItems.slice(0, 6).map((item) => {
+      <nav className="md:hidden fixed bottom-0 w-full bg-bg-elevated/90 backdrop-blur-xl border-t border-border-subtle flex overflow-x-auto gap-6 px-4 py-2 pb-safe z-50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.path}
               to={item.path}
-              className={`flex flex-col items-center p-1.5 transition-colors ${
+              className={`flex flex-col items-center p-1.5 transition-colors shrink-0 ${
                 isActive ? 'text-accent' : 'text-text-tertiary'
               }`}
             >
               <Icon size={20} />
-              <span className="text-[9px] font-medium mt-0.5">{item.name}</span>
+              <span className="text-[9px] font-medium mt-0.5 whitespace-nowrap">{item.name}</span>
             </Link>
           );
         })}
