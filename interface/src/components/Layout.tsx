@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, CheckSquare, Wallet, Users, Store, 
   Calendar, FolderOpen, BookMarked, ClipboardList, 
-  BedDouble, BarChart3, UserPlus, Gem, LogOut, Receipt
+  BedDouble, BarChart3, UserPlus, Gem, LogOut, Receipt,
+  Menu, X
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +28,12 @@ const navItems = [
 export function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -33,17 +41,57 @@ export function Layout() {
   };
 
   return (
-    <div className="flex h-screen bg-bg-base font-sans">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-60 bg-bg-elevated border-r border-border-subtle shrink-0">
-        {/* Logo */}
-        <div className="px-6 py-5 flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-600 via-amber-500 to-yellow-600 flex items-center justify-center shadow-md">
-            <Gem size={18} className="text-white" />
+    <div className="flex h-screen bg-bg-base font-sans overflow-hidden">
+      
+      {/* Mobile Header */}
+      <header className="md:hidden absolute top-0 left-0 w-full h-16 bg-bg-elevated border-b border-border-subtle flex items-center justify-between px-4 z-40">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-600 via-amber-500 to-yellow-600 flex items-center justify-center shadow-sm">
+            <Gem size={16} className="text-white" />
           </div>
           <span className="text-lg font-bold tracking-tight text-text-primary">
             PlanLex
           </span>
+        </div>
+        <button 
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+        >
+          <Menu size={24} />
+        </button>
+      </header>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar (Desktop & Mobile Drawer) */}
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-bg-elevated border-r border-border-subtle shrink-0 flex flex-col transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+          isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
+        }`}
+      >
+        {/* Logo Area */}
+        <div className="px-6 py-5 flex items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-600 via-amber-500 to-yellow-600 flex items-center justify-center shadow-md">
+              <Gem size={18} className="text-white" />
+            </div>
+            <span className="text-lg font-bold tracking-tight text-text-primary">
+              PlanLex
+            </span>
+          </div>
+          {/* Mobile close button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden p-1 text-text-tertiary hover:text-text-primary"
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Navigation */}
@@ -80,29 +128,10 @@ export function Layout() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative">
+      <main className="flex-1 overflow-y-auto relative pt-16 md:pt-0 w-full">
         <Outlet />
       </main>
 
-      {/* Mobile Bottom Bar */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-bg-elevated/90 backdrop-blur-xl border-t border-border-subtle flex overflow-x-auto gap-6 px-4 py-2 pb-safe z-50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex flex-col items-center p-1.5 transition-colors shrink-0 ${
-                isActive ? 'text-accent' : 'text-text-tertiary'
-              }`}
-            >
-              <Icon size={20} />
-              <span className="text-[9px] font-medium mt-0.5 whitespace-nowrap">{item.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
     </div>
   );
 }
